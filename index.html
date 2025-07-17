@@ -1,0 +1,1812 @@
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM CONSTRUCCIONES</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+      
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: none; 
+        }
+
+        body {
+            overflow-x: hidden;
+            background-color: #1a1a2e;
+            color: #fff;
+        }
+
+        
+        .cursor {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: rgba(255, 165, 0, 0.9);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease-out, width 0.15s ease-out, height 0.15s ease-out;
+        }
+
+        .cursor.active {
+            width: 24px;
+            height: 24px;
+            background-color: rgba(255, 165, 0, 0.7);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 165, 0, 0.4);
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+        }
+
+             .clientes-logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            }
+            .clientes-logos img.logo-peq {
+  height: 100px !important;  
+  max-width: 180px !important;
+}
+
+            .clientes-logos img {
+            max-width: 120px;
+            max-height: 60px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            }
+
+            .clientes-logos img:hover {
+            transform: scale(1.05);
+            }
+
+
+ 
+        .menu-activation-area {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 100vh;
+            z-index: 999;
+        }
+
+ 
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background-color: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.4);
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h2 {
+            color: #ffa500;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-header img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: none;
+            transition: transform 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 12px;
+            transition: transform 0.2s;
+        }
+
+        .nav-links li:hover {
+            transform: translateX(5px);
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: none;
+        }
+
+        .nav-links a:hover {
+            color: #ffa500;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-links i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+  
+        .hamburger-menu {
+            position: absolute;
+            top: 25px;
+            right: -50px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            cursor: none;
+            transition: all 0.3s;
+            background-color: rgba(26, 26, 46, 0.9);
+            border-radius: 0 5px 5px 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar.active .hamburger-menu {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .hamburger-line {
+            width: 25px;
+            height: 2px;
+            background-color: #ffa500;
+            margin: 3px 0;
+            transition: all 0.3s;
+        }
+
+     
+        .main-content {
+            margin-left: 0;
+            padding: 20px;
+            transition: margin-left 0.3s;
+            min-height: 100vh;
+        }
+
+        .main-content.shifted {
+            margin-left: 280px;
+        }
+
+
+        .section {
+            min-height: 100vh;
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,165,0,0.1) 0%, rgba(26,26,46,0.95) 80%);
+            z-index: -1;
+        }
+
+        .section h1, .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #ffa500;
+            background: linear-gradient(135deg, #ffa500, #ff8c00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: fadeIn 1s ease;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #ffa500;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin-bottom: 30px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffa500, #ff8c00);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 1rem 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+            border: none;
+            cursor: none;
+            max-width: 200px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+            background: linear-gradient(135deg, #ff8c00, #ffa500);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #ffa500;
+            color: #ffa500;
+        }
+
+#bienvenida {
+    position: relative;
+    background-image: url('bienvenida.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    overflow: hidden; 
+    
+
+}
+
+#bienvenida::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        ellipse at center, 
+        rgba(255,165,0,0.15) 0%, 
+        rgba(26,26,46,0.95) 100%
+    );
+    z-index: 0;
+    
+}
+
+        .hero {
+            max-width: 900px;
+        }
+
+
+        #acerca {
+            background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover {
+            transform: scale(1.03);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+#servicios {
+    position: relative;
+    background-image: url('servicios.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    min-height: 100vh;
+    overflow: hidden;
+ 
+
+}
+
+#servicios::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        ellipse at center, 
+        rgba(255,165,0,0.15) 0%, 
+        rgba(26,26,46,0.95) 100%
+    );
+    z-index: 0;
+
+    
+}
+
+#bienvenida > *,
+#servicios > * {
+    position: relative;
+    z-index: 1;
+}
+#servicios > * {
+    position: relative;
+    z-index: 1; /* asegura que el contenido esté sobre el ::before */
+}
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background-color: rgba(26, 26, 46, 0.9);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255, 165, 0, 0.2);
+            border-color: rgba(255, 165, 0, 0.7);
+        }
+
+        .service-card h3 {
+            color: #ffa500;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .service-card ul {
+            list-style-position: inside;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .service-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        .service-category {
+            grid-column: 1 / -1;
+            color: #ffa500;
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+            border-bottom: 2px solid rgba(255, 165, 0, 0.5);
+            padding-bottom: 0.5rem;
+        }
+
+    
+        #contacto {
+            background: url('https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-form {
+            flex: 1;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .info-icon {
+            font-size: 1.5rem;
+            color: #ffa500;
+            margin-right: 1rem;
+            margin-top: 0.3rem;
+        }
+
+        .info-item h3 {
+            color: #ffa500;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-item p {
+            margin-bottom: 0;
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .map-container {
+            height: 300px;
+            margin-top: 2rem;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        form {
+            display: grid;
+            gap: 1rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: rgba(26, 26, 46, 0.8);
+            color: white;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ffa500;
+            box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.1);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+
+        footer {
+            background: linear-gradient(135deg, #ff8c00, #ffa500);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 100;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+.auto-carousel-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 20px;
+    position: relative;
+}
+
+.auto-carousel-title {
+    text-align: center;
+    color: #ffa500;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.auto-carousel {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    overflow: hidden;
+}
+
+.auto-carousel-slide {
+    position: absolute;
+    width: 250px;
+    height: 300px;
+    transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transform-origin: center center;
+    cursor: pointer;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: brightness(0.7);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.auto-carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* Posiciones y tamaños */
+.auto-carousel-slide.left {
+    transform: translateX(-80%) scale(0.8);
+    z-index: 2;
+}
+
+.auto-carousel-slide.center {
+    transform: translateX(0) scale(1);
+    z-index: 3;
+    filter: brightness(1);
+}
+
+.auto-carousel-slide.right {
+    transform: translateX(80%) scale(0.8);
+    z-index: 2;
+}
+
+.auto-carousel-slide.hidden {
+    transform: translateX(-150%) scale(0.6);
+    opacity: 0;
+    z-index: 0;
+}
+
+.auto-carousel-slide.next-hidden {
+    transform: translateX(150%) scale(0.6);
+    opacity: 0;
+    z-index: 0;
+}
+
+/* Efecto hover */
+.auto-carousel-slide:hover {
+    filter: brightness(0.9);
+}
+
+/* Indicadores */
+.auto-carousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.auto-carousel-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auto-carousel-indicator.active {
+    background: #ffa500;
+    transform: scale(1.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .auto-carousel {
+        height: 300px;
+    }
+    
+    .auto-carousel-slide {
+        width: 200px;
+        height: 250px;
+    }
+    
+    .auto-carousel-slide.left {
+        transform: translateX(-70%) scale(0.7);
+    }
+    
+    .auto-carousel-slide.right {
+        transform: translateX(70%) scale(0.7);
+    }
+}
+
+@media (max-width: 480px) {
+    .auto-carousel {
+        height: 250px;
+    }
+    
+    .auto-carousel-slide {
+        width: 150px;
+        height: 200px;
+    }
+    
+    .auto-carousel-title {
+        font-size: 1.5rem;
+    }
+}
+
+
+
+
+
+
+
+
+        .coverflow-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 20px;
+    perspective: 1000px;
+    overflow: visible;
+    height: 300px;
+}
+
+.coverflow-title {
+    text-align: center;
+    color: #ffa500;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.coverflow {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+.coverflow-item {
+    position: absolute;
+    width: 200px;
+    height: 150px;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    transform-origin: center center;
+    cursor: pointer;
+    backface-visibility: hidden;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.coverflow-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .coverflow-container {
+        height: 250px;
+    }
+    
+    .coverflow-item {
+        width: 160px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .coverflow-container {
+        height: 200px;
+    }
+    
+    .coverflow-item {
+        width: 120px;
+        height: 90px;
+    }
+
+        }
+
+        /* Imagen de clientes antes del footer */
+        .clientes-section {
+            width: 100%;
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .clientes-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .coverflow {
+                height: 250px;
+            }
+            
+            .coverflow-item {
+                width: 160px;
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .coverflow {
+                height: 200px;
+            }
+            
+            .coverflow-item {
+                width: 120px;
+                height: 90px;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content.shifted {
+                margin-left: 0;
+            }
+
+            .hamburger-menu {
+                right: -45px;
+            }
+            
+            .menu-activation-area {
+                display: none;
+            }
+
+            .about-content, .contact-container {
+                flex-direction: column;
+            }
+
+            .section {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+        }
+
+        @media (min-width: 769px) {
+            .mobile-header {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cursor personalizado -->
+    <div class="cursor"></div>
+    <div class="cursor-trail"></div>
+
+    <!-- Área de activación del menú lateral -->
+    <div class="menu-activation-area"></div>
+
+    <!-- Barra lateral -->
+    <div class="sidebar">
+        <div class="hamburger-menu">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </div>
+
+        <div class="sidebar-header">
+            <h2><img src="dmlogo.png" alt="DAIRECKTECH Logo"></h2>
+            <button class="close-btn">&times;</button>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#bienvenida"><i class="bi bi-house-door"></i>Inicio</a></li>
+            <li><a href="#acerca"><i class="bi bi-people"></i>Nosotros</a></li>
+            <li><a href="#servicios"><i class="bi bi-tools"></i>Servicios</a></li>
+            <li><a href="#contacto"><i class="bi bi-envelope"></i>Contacto</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <!-- Sección de Bienvenida -->
+        <section id="bienvenida" class="section active">
+            <div class="hero">
+                <h1 class="fade-in">DM CONSTRUCCIONES</h1>
+                <p class="fade-in delay-1">Tu aliado confiable en proyectos de construcción, mantenimiento y soluciones técnicas especializadas.<br>
+
+En DM Construcciones unimos experiencia, innovación y compromiso para ofrecer resultados de alta calidad en el sector residencial, comercial e industrial. Ya sea que necesites una remodelación, un sistema de seguridad, limpieza profunda, jardinería o precisión CNC en metales nobles, estamos listos para ayudarte.
+<br>
+Transformamos ideas en realidades funcionales, seguras y duraderas.</p>
+                <div class="fade-in delay-2">
+                    <a href="#servicios" class="btn">Servicios</a>
+                    <a href="#contacto" class="btn">Contactar</a>
+                </div>
+            </div>
+            
+
+<div class="auto-carousel-container">
+    <h2 class="auto-carousel-title">NUESTROS TRABAJOS</h2>
+    <div class="auto-carousel" id="auto-carousel">
+    </div>
+</div>
+
+        </section>
+
+        <!-- Sección Acerca de Nosotros -->
+        <section id="acerca" class="section">
+            <h2 class="fade-in">Acerca de Nosotros</h2>
+            <div class="about-content">
+                <div class="about-text fade-in">
+                    <p>En DM Construcciones somos una empresa mexicana especializada en servicios integrales de construcción, mantenimiento y climatización, tanto en el sector residencial como industrial. </p>
+                    <p>Nos destacamos por ofrecer soluciones a medida, con un enfoque técnico, eficiente y de alta calidad.</p>
+                    <p>Con años de experiencia en el mercado, brindamos servicios que abarcan desde remodelaciones, instalaciones eléctricas, limpieza y jardinería, hasta sistemas de videovigilancia, alarmas, control de accesos y destape de drenaje. También realizamos fletes locales y proyectos de alta precisión CNC en metales nobles, combinando innovación con compromiso.</p>
+                    <p>Nuestro objetivo es claro: superar las expectativas de nuestros clientes a través de un trabajo responsable, puntual y profesional.</p>
+                </div>
+                <div class="about-image fade-in delay-1">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Equipo de corte láser CNC">
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Servicios -->
+        <section id="servicios" class="section">
+            <h2 class="fade-in">Nuestros Servicios</h2>
+            <div class="services-grid">
+                <!-- Nuevos servicios agregados -->
+                <div class="service-category">🏗️ Construcción y Obra Civil</div>
+                
+                <div class="service-card fade-in">
+                    <h3>Construcción en general</h3>
+                    <p>Servicios integrales de construcción para proyectos residenciales, comerciales e industriales.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Albañilería</h3>
+                    <p>Trabajos de albañilería profesional con materiales de alta calidad.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-2">
+                    <h3>Herrería</h3>
+                    <p>Fabricación e instalación de estructuras metálicas y trabajos de herrería artística.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Corte y soldadura</h3>
+                    <p>Servicios profesionales de corte y soldadura para diversos materiales.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-2">
+                    <h3>Pailería</h3>
+                    <p>Fabricación de piezas metálicas y estructuras en lámina.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Trabajo en alturas</h3>
+                    <p>Servicios especializados en trabajos verticales y en alturas con seguridad certificada.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-2">
+                    <h3>Servicio en espacios confinados</h3>
+                    <p>Trabajos especializados en áreas de acceso restringido con protocolos de seguridad.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Optimización de proyectos</h3>
+                    <p>Asesoría para mejorar eficiencia y reducir costos en proyectos de construcción.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-2">
+                    <h3>Planos y renders</h3>
+                    <p>Elaboración de planos arquitectónicos y renders 3D para visualización de proyectos.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Topografía</h3>
+                    <p>Servicios topográficos profesionales para proyectos de construcción.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-2">
+                    <h3>Planos y servicio de topografía</h3>
+                    <p>Elaboración de planos y levantamientos topográficos precisos.</p>
+                </div>
+
+                <div class="service-category">⚙️ Mantenimiento e Instalaciones Técnicas</div>
+                
+                <div class="service-card fade-in">
+                    <h3>Electricidad</h3>
+                    <p>Instalaciones y mantenimiento eléctrico residencial e industrial.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Plomería</h3>
+                    <p>Servicios completos de plomería e instalaciones hidráulicas.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-2">
+                    <h3>Reparación de lámparas</h3>
+                    <p>Mantenimiento y reparación de sistemas de iluminación.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Aire acondicionado</h3>
+                    <p>Instalación y mantenimiento de sistemas de climatización.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-2">
+                    <h3>Refrigeración</h3>
+                    <p>Servicios especializados en sistemas de refrigeración comercial e industrial.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Servicio de maquilado</h3>
+                    <p>Fabricación de piezas y componentes bajo especificaciones del cliente.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-2">
+                    <h3>Mantenimientos y renta de:</h3>
+                    <ul>
+                        <li>Plantas eléctricas</li>
+                        <li>Torres de iluminación</li>
+                        <li>Compresores de aire</li>
+                    </ul>
+                </div>
+
+                <div class="service-category">🚛 Logística y Transporte</div>
+                
+                <div class="service-card fade-in">
+                    <h3>Fletes</h3>
+                    <p>Servicio de transporte y logística para materiales y equipo.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Renta y servicio de maquinaria pesada</h3>
+                    <p>Renta de equipo pesado con operadores calificados.</p>
+                </div>
+
+                <div class="service-category">🎨 Acabados y Servicios Complementarios</div>
+                
+                <div class="service-card fade-in">
+                    <h3>Pintura</h3>
+                    <p>Servicios profesionales de pintura residencial e industrial.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Jardinería</h3>
+                    <p>Diseño, instalación y mantenimiento de áreas verdes.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-2">
+                    <h3>Servicios generales</h3>
+                    <p>Soluciones integrales para mantenimiento de instalaciones.</p>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Servicios de limpieza</h3>
+                    <p>Limpieza profesional para obras, oficinas y espacios industriales.</p>
+                </div>
+
+                <!-- Servicios originales -->
+                <div class="service-category">🔧 Corte Láser CNC y Servicios Especializados</div>
+                
+                <div class="service-card fade-in">
+                    <h3>Corte de Precisión</h3>
+                    <p>Corte láser CNC de alta capacidad para piezas metálicas con tolerancias ajustadas a especificaciones técnicas.</p>
+                    <ul>
+                        <li>Corte hasta 1/2" de espesor</li>
+                        <li>Alta fidelidad geométrica</li>
+                        <li>Optimización de material</li>
+                    </ul>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Aplicaciones</h3>
+                    <p>Soluciones especializadas para diversas industrias y necesidades:</p>
+                    <ul>
+                        <li>Celosías arquitectónicas</li>
+                        <li>Componentes para maquinaria</li>
+                        <li>Estructuras metálicas</li>
+                        <li>Rejillas y parrillas</li>
+                        <li>Diseño estructural</li>
+                    </ul>
+                </div>
+                
+                <div class="service-card fade-in delay-2">
+                    <h3>Materiales</h3>
+                    <p>Trabajamos con diversos materiales metálicos para satisfacer tus requerimientos:</p>
+                    <ul>
+                        <li>Acero al carbón, inoxidable y galvanizado</li>
+                        <li>Bronce</li>
+                        <li>Aluminio</li>
+                        <li>Cobre</li>
+                        <li>Latón</li>
+                        <li>Oro</li>
+                    </ul>
+                </div>
+                
+                <div class="service-card fade-in delay-1">
+                    <h3>Sectores</h3>
+                    <p>Servicios especializados para diferentes sectores industriales:</p>
+                    <ul>
+                        <li>Ingeniería mecánica</li>
+                        <li>Diseño industrial</li>
+                        <li>Arquitectura y construcción</li>
+                        <li>Proyectos metalmecánicos</li>
+                        <li>Prototipos y producción</li>
+                    </ul>
+                </div>
+
+                <div class="service-card fade-in delay-2">
+                    <h3>Cortes Adicionales</h3>
+                    <p>Trabajamos con diversos materiales metálicos para satisfacer tus requerimientos:</p>
+                    <ul>
+                        <li>Plástico en general</li>
+                        <li>Madera</li>
+                        <li>Cartón</li>
+                        <li>Corte MDF</li>
+                        <li>Nylamid</li>
+                    </ul>
+                </div>
+
+                <div class="service-card fade-in delay-1">
+                    <h3>Escáner Láser 3D y Modelado de Malla – Entorno BIM</h3>
+                    <p>Escaneado láser portátil de alta precisión con tecnología SIMSCAN, ideal para capturar geometrías complejas, estructuras y herramientas. El sistema genera mallas 3D optimizadas para entornos BIM y procesos técnicos:</p>
+                    <ul>
+                        <li>Estructuras con alta resolución</li>
+                        <li>Proyectos de arquitectura e ingeniería con documentación precisa</li>
+                        <li>Modelado digital de superficies y estructuras irregulares</li>
+                        <li>Inspección técnica y control dimensional</li>
+                        <li>Obtención de modelos 3D listos para CAD o simulación</li>
+                        <li>Compatible con flujos de trabajo BIM y visualización interactiva</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Contacto -->
+        <section id="contacto" class="section">
+            <h2 class="fade-in">Ubicación y Contacto</h2>
+            <div class="contact-container">
+                <div class="contact-info fade-in">
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div>
+                            <h3>Dirección</h3>
+                            <p>Área Metropolitana </p>
+                               <p>  [Entregas en sucursal, locales y nacionales]</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <div>
+                            <h3>Teléfono</h3>
+                            <p>+52 813239 1715</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">✉️</div>
+                        <div>
+                            <h3>Email</h3>
+                            <p>dairecktech2025@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                  <!-- <div class="map-container fade-in delay-1">
+                        <iframe src="https://www.google.com/maps/embed?pb=!3m2!1ses-419!2smx!4v1752163781261!5m2!1ses-419!2smx!6m8!1m7!1sVijEJzHhog_P2lO3rpMeeA!2m2!1d25.67034698436604!2d-100.260036754565!3f132.02034882084223!4f-14.330010745896118!5f0.4000000000000002" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div> --> 
+                </div>
+                
+                <div class="contact-form fade-in delay-2">
+                    <form id="formulario-contacto" action="https://formsubmit.co/dairecktech2025@gmail.com" method="POST">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_next" value="https://dairecktech.github.io/dairecktechmx/agradecimiento.html">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_subject" value="Nuevo mensaje desde el sitio web">
+                        <input type="hidden" name="_autoresponse" value="Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.">
+                        <input type="text" name="_honey" style="display:none">
+                        
+                        <input type="text" name="nombre" placeholder="Nombre completo" required>
+                        <input type="email" name="email" placeholder="Correo electrónico" required>
+                        <input type="tel" name="telefono" placeholder="Teléfono (opcional)">
+                        <textarea name="mensaje" placeholder="Describe tu proyecto o solicitud..." required></textarea>
+                        <button type="submit" class="btn">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+       <div class="coverflow-container">
+        <h2 class="coverflow-title">Nuestros Clientes</h2>
+        <div class="coverflow"  id="coverflow-slider"></div>
+ </div>
+        <!-- Footer -->
+        <footer class="fade-in">
+            <div class="logo">DAIRECKTECH</div>
+            <p>Corte Láser CNC de Precisión Industrial</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/dairecktechmx/" target="_blank" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61570096811176" target="_blank" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                </a>
+                <a href="https://wa.me/528132391715" target="_blank" aria-label="WhatsApp">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 2c3.9 0 7 3.1 7 7 0 5.2-7 13-7 13S3 14.2 3 9c0-3.9 3.1-7 7-7z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                </a>
+                <a href="https://www.tiktok.com/@dairecktech?lang=es-419" target="_blank" aria-label="TikTok">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+                        <path d="M8.5 8.5v.01"></path>
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/dairecktech/" target="_blank" aria-label="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+            </div>
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> DAIRECKTECH. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Cursor personalizado mejorado
+        const cursor = document.querySelector('.cursor');
+        const cursorTrail = document.querySelector('.cursor-trail');
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+        let trailX = 0;
+        let trailY = 0;
+        let lastMoveTime = Date.now();
+        const inactivityThreshold = 100; // ms de inactividad para ocultar la estela
+
+        // Función para animar el cursor y la estela
+        function animateCursor() {
+            // Suavizar el movimiento del cursor principal
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+            cursor.style.left = `${cursorX}px`;
+            cursor.style.top = `${cursorY}px`;
+
+            // Calcular velocidad del movimiento
+            const now = Date.now();
+            const timeSinceLastMove = now - lastMoveTime;
+            
+            // Actualizar estela solo si hay movimiento reciente
+            if (timeSinceLastMove < inactivityThreshold) {
+                // Suavizar el movimiento de la estela
+                trailX += (cursorX - trailX) * 0.1;
+                trailY += (cursorY - trailY) * 0.1;
+                
+                // Aplicar transformación
+                cursorTrail.style.left = `${trailX}px`;
+                cursorTrail.style.top = `${trailY}px`;
+                cursorTrail.style.opacity = '0.4';
+            } else {
+                // Ocultar estela si no hay movimiento
+                cursorTrail.style.opacity *= 0.9; // Desvanecer gradualmente
+            }
+
+            requestAnimationFrame(animateCursor);
+        }
+
+        // Iniciar animación
+        animateCursor();
+
+        // Actualizar posición del mouse
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            lastMoveTime = Date.now();
+        });
+
+        // Efecto al hacer hover en elementos clickables
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseover', () => {
+                cursor.classList.add('active');
+                cursorTrail.style.width = '24px';
+                cursorTrail.style.height = '24px';
+                cursorTrail.style.backgroundColor = 'rgba(255, 165, 0, 0.6)';
+            });
+            el.addEventListener('mouseout', () => {
+                cursor.classList.remove('active');
+                cursorTrail.style.width = '12px';
+                cursorTrail.style.height = '12px';
+                cursorTrail.style.backgroundColor = 'rgba(255, 165, 0, 0.4)';
+            });
+        });
+
+        // Control del menú desplegable automático
+        const menuActivationArea = document.querySelector('.menu-activation-area');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        const hamburgerMenu = document.querySelector('.hamburger-menu');
+        const closeBtn = document.querySelector('.close-btn');
+
+        // Variables para controlar el menú
+        let menuTimeout;
+        const menuDelay = 300; // ms de retraso para cerrar el menú
+
+        // Abrir menú al entrar en el área de activación
+        menuActivationArea.addEventListener('mouseenter', () => {
+            clearTimeout(menuTimeout);
+            sidebar.classList.add('active');
+            mainContent.classList.add('shifted');
+        });
+
+        // Cerrar menú al salir del área del menú
+        sidebar.addEventListener('mouseleave', (e) => {
+            // Solo cerrar si el mouse se mueve hacia la derecha (no hacia arriba o abajo)
+            if (e.clientX > sidebar.getBoundingClientRect().right) {
+                menuTimeout = setTimeout(() => {
+                    sidebar.classList.remove('active');
+                    mainContent.classList.remove('shifted');
+                }, menuDelay);
+            }
+        });
+
+        // Cancelar el cierre si el mouse vuelve al menú
+        sidebar.addEventListener('mouseenter', () => {
+            clearTimeout(menuTimeout);
+        });
+
+        // Cerrar menú con el botón de cerrar
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            mainContent.classList.remove('shifted');
+        });
+
+        // Cerrar sidebar al hacer clic en un enlace (para móviles)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('active');
+                    mainContent.classList.remove('shifted');
+                }
+            });
+        });
+
+        // Smooth scrolling para enlaces
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Mostrar/ocultar menú hamburguesa en móviles
+        if (window.innerWidth <= 768) {
+            hamburgerMenu.style.display = 'flex';
+            hamburgerMenu.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+                mainContent.classList.toggle('shifted');
+            });
+        }
+
+        // Animación de scroll para las secciones
+        const sections = document.querySelectorAll('.section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+    // Configuración del carrusel automático
+    const autoCarousel = document.getElementById('auto-carousel');
+    if (!autoCarousel) return;
+    
+    // Array de imágenes (img1.png a img15.png)
+    const images = [];
+    for (let i = 1; i <= 15; i++) {
+        images.push(`img${i}.png`);
+    }
+    
+    // Variables de estado
+    let currentIndex = 0;
+    let slides = [];
+    let indicators = [];
+    let intervalId;
+    const slideInterval = 2000; // 2 segundos
+    
+    // Crear slides e indicadores
+    function initializeCarousel() {
+        // Crear contenedor de indicadores
+        const indicatorsContainer = document.createElement('div');
+        indicatorsContainer.className = 'auto-carousel-indicators';
+        
+        // Crear slides
+        images.forEach((img, index) => {
+            // Crear slide
+            const slide = document.createElement('div');
+            slide.className = 'auto-carousel-slide';
+            slide.dataset.index = index;
+            
+            const imgElement = document.createElement('img');
+            imgElement.src = img;
+            imgElement.alt = `Proyecto ${index + 1}`;
+            imgElement.loading = "lazy";
+            
+            slide.appendChild(imgElement);
+            autoCarousel.appendChild(slide);
+            slides.push(slide);
+            
+            // Crear indicador
+            const indicator = document.createElement('div');
+            indicator.className = 'auto-carousel-indicator';
+            if (index === 0) indicator.classList.add('active');
+            indicator.dataset.index = index;
+            indicator.addEventListener('click', () => goToSlide(index));
+            indicatorsContainer.appendChild(indicator);
+            indicators.push(indicator);
+        });
+        
+        // Agregar indicadores después del carrusel
+        autoCarousel.parentNode.insertBefore(indicatorsContainer, autoCarousel.nextSibling);
+        
+        // Posicionar slides inicialmente
+        positionSlides();
+        
+        // Iniciar rotación automática
+        startAutoRotation();
+    }
+    
+    // Posicionar los slides según el índice actual
+    function positionSlides() {
+        const totalSlides = slides.length;
+        
+        slides.forEach((slide, index) => {
+            // Calcular la posición relativa al slide actual
+            let position = (index - currentIndex + totalSlides) % totalSlides;
+            
+            // Resetear clases
+            slide.className = 'auto-carousel-slide';
+            
+            // Asignar clases según la posición
+            if (position === 0) {
+                slide.classList.add('center');
+            } else if (position === 1 || position === totalSlides - 1) {
+                slide.classList.add(position === 1 ? 'right' : 'left');
+            } else if (position === 2 || position === totalSlides - 2) {
+                slide.classList.add(position === 2 ? 'next-hidden' : 'hidden');
+            } else {
+                slide.classList.add('hidden');
+            }
+        });
+        
+        // Actualizar indicadores
+        updateIndicators();
+    }
+    
+    // Actualizar indicadores
+    function updateIndicators() {
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    // Navegar a un slide específico
+    function goToSlide(index) {
+        currentIndex = index;
+        positionSlides();
+        resetAutoRotation();
+    }
+    
+    // Slide siguiente
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        positionSlides();
+    }
+    
+    // Slide anterior
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        positionSlides();
+    }
+    
+    // Rotación automática
+    function startAutoRotation() {
+        if (intervalId) clearInterval(intervalId);
+        intervalId = setInterval(nextSlide, slideInterval);
+    }
+    
+    function resetAutoRotation() {
+        if (intervalId) clearInterval(intervalId);
+        startAutoRotation();
+    }
+    
+    // Event listeners para navegación al hacer clic en slides
+    autoCarousel.addEventListener('click', (e) => {
+        const slide = e.target.closest('.auto-carousel-slide');
+        if (!slide) return;
+        
+        const index = parseInt(slide.dataset.index);
+        const currentPosition = (index - currentIndex + slides.length) % slides.length;
+        
+        if (currentPosition === 1 || currentPosition === slides.length - 1) {
+            // Click en slide derecho o izquierdo
+            if (currentPosition === 1) {
+                nextSlide();
+            } else {
+                prevSlide();
+            }
+            resetAutoRotation();
+        } else if (currentPosition !== 0) {
+            // Click en slide oculto - ir directamente
+            goToSlide(index);
+        }
+    });
+    
+    // Pausar al interactuar con el carrusel
+    autoCarousel.addEventListener('mouseenter', () => {
+        if (intervalId) clearInterval(intervalId);
+    });
+    
+    autoCarousel.addEventListener('mouseleave', () => {
+        startAutoRotation();
+    });
+    
+    // Inicializar el carrusel
+    initializeCarousel();
+}); 
+</script>
+
+
+<script>
+    // Esperar a que el DOM esté completamente cargado
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener el contenedor del coverflow (usando el ID correcto 'coverflow-slider')
+        const coverflowContainer = document.getElementById('coverflow-slider');
+        
+        if (!coverflowContainer) {
+            console.error('Elemento coverflow-slider no encontrado en el DOM');
+            return;
+        }
+        
+        // Array de imágenes de ejemplo (reemplaza con tus propias imágenes)
+        const images = [ 
+            'aam.svg',
+            'selecta.png',
+            'roshfrans.png',
+            'hubbell.svg',
+            'uanl.png',
+            'sikara.png',
+            'kloeckner.png',
+            'nmm.png',
+            'sunmall.png',
+            'fluidmaster.svg',
+            'salud-nl.png',
+            'dsv.png',
+             'galerias.png',
+            'amaranzero.svg',
+            'wgym.png',
+            'schneider.png',
+            'coppel.png',
+            'dinamica.png'
+        ];
+
+        // Crear elementos de imagen
+        images.forEach((img, index) => {
+            const item = document.createElement('div');
+            item.className = 'coverflow-item';
+            item.dataset.index = index;
+            
+            const imgElement = document.createElement('img');
+            imgElement.src = img;
+            imgElement.alt = `Cliente ${index + 1}`;
+            
+            item.appendChild(imgElement);
+            coverflowContainer.appendChild(item);
+        });
+        
+        const items = document.querySelectorAll('.coverflow-item');
+        const totalItems = items.length;
+        let radius = 300; // Radio del círculo
+        let currentAngle = 0;
+        let targetAngle = 0;
+        let autoRotate = true;
+        let rotationSpeed = 0.5; // Velocidad de rotación automática
+        let animationId;
+        let isDragging = false;
+        let startX, startAngle;
+        
+        // Posicionar los items en el círculo 3D
+        function positionItems(angle = currentAngle) {
+            const angleIncrement = (Math.PI * 2) / totalItems;
+            
+            items.forEach((item, index) => {
+                const itemAngle = angle + (index * angleIncrement);
+                const x = Math.sin(itemAngle) * radius;
+                const z = (Math.cos(itemAngle) * radius) - radius; // Ajuste para que el frente esté en z=0
+                const scale = 0.6 + (0.4 * (1 - Math.abs(z) / radius));
+                
+                // Aplicar transformaciones
+                item.style.transform = `
+                    translateX(${x}px) 
+                    translateZ(${z}px) 
+                    scale(${scale})
+                `;
+                
+                // Opacidad basada en la posición Z
+                item.style.opacity = 0.5 + (0.5 * (1 - Math.abs(z) / radius));
+                
+                // Traer al frente el elemento central
+                item.style.zIndex = Math.floor(scale * 100);
+            });
+        }
+        
+        // Animación suave
+        function animate() {
+            // Suavizar el movimiento hacia el ángulo objetivo
+            currentAngle += (targetAngle - currentAngle) * 0.1;
+            
+            // Rotación automática cuando no hay interacción
+            if (autoRotate && !isDragging) {
+                targetAngle -= rotationSpeed * 0.01;
+            }
+            
+            positionItems(currentAngle);
+            animationId = requestAnimationFrame(animate);
+        }
+        
+        // Iniciar animación
+        function startAnimation() {
+            if (!animationId) {
+                animate();
+            }
+        }
+        
+        // Detener animación
+        function stopAnimation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        }
+        
+        // Navegar a un ítem específico
+        function goToItem(index) {
+            const angleIncrement = (Math.PI * 2) / totalItems;
+            targetAngle = -index * angleIncrement;
+        }
+        
+        // Eventos de ratón
+        coverflowContainer.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startAngle = currentAngle;
+            autoRotate = false;
+            coverflowContainer.style.cursor = 'grabbing';
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.clientX - startX;
+            targetAngle = startAngle + (deltaX * 0.01);
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            autoRotate = true;
+            coverflowContainer.style.cursor = 'grab';
+        });
+        
+        // Eventos táctiles para móviles
+        coverflowContainer.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            startAngle = currentAngle;
+            autoRotate = false;
+            e.preventDefault();
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - startX;
+            targetAngle = startAngle + (deltaX * 0.01);
+            e.preventDefault();
+        });
+        
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+            autoRotate = true;
+        });
+        
+        // Navegación por clic en los ítems
+        items.forEach(item => {
+            item.addEventListener('click', () => {
+                if (isDragging) return; // Evitar clics durante el arrastre
+                const index = parseInt(item.dataset.index);
+                goToItem(index);
+            });
+        });
+        
+        // Responsive: recalcular al cambiar tamaño
+        function handleResize() {
+            radius = Math.min(window.innerWidth * 0.4, 400);
+            positionItems();
+        }
+        
+        window.addEventListener('resize', handleResize);
+        
+        // Inicialización
+        coverflowContainer.style.cursor = 'grab';
+        handleResize();
+        startAnimation();
+        
+        // Limpieza al desmontar
+        window.addEventListener('beforeunload', () => {
+            stopAnimation();
+            window.removeEventListener('resize', handleResize);
+        });
+    });
+</script>
+</body>
+</html>
