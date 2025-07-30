@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gracias por contactarnos | DM Construcciones</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: none;
+        }
+
+        body {
+            overflow-x: hidden;
+            background-color: #1a1a2e;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Cursor personalizado */
+        .cursor {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: rgba(255, 165, 0, 0.9);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease-out, width 0.15s ease-out, height 0.15s ease-out;
+        }
+
+        .cursor.active {
+            width: 24px;
+            height: 24px;
+            background-color: rgba(255, 165, 0, 0.7);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 165, 0, 0.4);
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+        }
+
+        /* Contenido principal */
+        .thank-you-section {
+            position: relative;
+            background-image: url('bienvenida.jpg');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .thank-you-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(
+                ellipse at center, 
+                rgba(255,165,0,0.15) 0%, 
+                rgba(26,26,46,0.95) 100%
+            );
+            z-index: 0;
+        }
+
+        .thank-you-container {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 40px;
+            background-color: rgba(26, 26, 46, 0.85);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffa500, #ff8c00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffa500, #ff8c00);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+            font-size: 1.1rem;
+            border: none;
+            cursor: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+            background: linear-gradient(135deg, #ff8c00, #ffa500);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #ff8c00, #ffa500);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 100;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            p {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+            
+            .thank-you-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cursor personalizado -->
+    <div class="cursor"></div>
+    <div class="cursor-trail"></div>
+
+    <!-- Sección de agradecimiento -->
+    <section class="thank-you-section">
+        <div class="thank-you-container">
+            <h1>¡Gracias por tu mensaje!</h1>
+            <p>Hemos recibido tu solicitud correctamente. Nuestro equipo se pondrá en contacto contigo en un plazo máximo de 24 horas hábiles.</p>
+            <p>Mientras tanto, puedes explorar más sobre nuestros servicios o seguirnos en nuestras redes sociales.</p>
+            <a href="index.html" class="btn">Volver al Inicio</a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="logo">DM CONSTRUCCIONES</div>
+        <p>Especializados en construcción, corte láser, remodelación y sistemas de climatización.</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/dm_contruccionesyclimatizacion/" target="_blank" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+            </a>
+            <a href="https://www.facebook.com/dmconstruccionesmx" target="_blank" aria-label="Facebook">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+            </a>
+            <a href="https://wa.me/528122969534" target="_blank" aria-label="WhatsApp">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 2c3.9 0 7 3.1 7 7 0 5.2-7 13-7 13S3 14.2 3 9c0-3.9 3.1-7 7-7z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+            </a>
+            <a href="https://www.tiktok.com/@dairecktech?lang=es-419" target="_blank" aria-label="TikTok">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+                    <path d="M8.5 8.5v.01"></path>
+                </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/dairecktech/" target="_blank" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+        <p>&copy; <script>document.write(new Date().getFullYear())</script> DM Construcciones. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Cursor personalizado
+        const cursor = document.querySelector('.cursor');
+        const cursorTrail = document.querySelector('.cursor-trail');
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+        let trailX = 0;
+        let trailY = 0;
+        let lastMoveTime = Date.now();
+        const inactivityThreshold = 100;
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+            cursor.style.left = `${cursorX}px`;
+            cursor.style.top = `${cursorY}px`;
+
+            const now = Date.now();
+            const timeSinceLastMove = now - lastMoveTime;
+            
+            if (timeSinceLastMove < inactivityThreshold) {
+                trailX += (cursorX - trailX) * 0.1;
+                trailY += (cursorY - trailY) * 0.1;
+                
+                cursorTrail.style.left = `${trailX}px`;
+                cursorTrail.style.top = `${trailY}px`;
+                cursorTrail.style.opacity = '0.4';
+            } else {
+                cursorTrail.style.opacity *= 0.9;
+            }
+
+            requestAnimationFrame(animateCursor);
+        }
+
+        animateCursor();
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            lastMoveTime = Date.now();
+        });
+
+        // Efecto al hacer hover en elementos clickables
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseover', () => {
+                cursor.classList.add('active');
+                cursorTrail.style.width = '24px';
+                cursorTrail.style.height = '24px';
+                cursorTrail.style.backgroundColor = 'rgba(255, 165, 0, 0.6)';
+            });
+            el.addEventListener('mouseout', () => {
+                cursor.classList.remove('active');
+                cursorTrail.style.width = '12px';
+                cursorTrail.style.height = '12px';
+                cursorTrail.style.backgroundColor = 'rgba(255, 165, 0, 0.4)';
+            });
+        });
+    </script>
+</body>
+</html>
